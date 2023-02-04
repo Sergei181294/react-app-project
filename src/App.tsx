@@ -1,10 +1,26 @@
 import "./scss/app.scss";
-import { Header, Categories, Sort, PizzaBlock } from "./components"
-
-
-
-
+import { Header, Categories, Sort, PizzaBlock } from "./components";
+import { useState, useEffect } from "react";
+// import pizzas from "./assets/pizzas.json";
+type PizzaItem = {
+  id: number;
+  imageUrl: string;
+  title: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+  category: number;
+  rating: number;
+}[];
 export const App = () => {
+  const [items, setItems] = useState<PizzaItem>([]);
+
+  useEffect(() => {
+    fetch("https://63de7bcc3d94d02c0babff3a.mockapi.io/items")
+      .then((res) => res.json())
+      .then((arr) => setItems(arr));
+  }, []);
+
   return (
     <div>
       <div className="wrapper">
@@ -17,10 +33,9 @@ export const App = () => {
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
-              <PizzaBlock  title="Чизбургер-пицца" price={500}/>
-              <PizzaBlock title="Мексиканская" price={350}/>
-              <PizzaBlock title="Баварская" price={400}/>
-              <PizzaBlock title="Грибной цыпленок" price={700}/>
+              {items.map((pizza) => (
+                <PizzaBlock {...pizza} key={pizza.id} />
+              ))}
             </div>
           </div>
         </div>
