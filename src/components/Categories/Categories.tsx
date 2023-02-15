@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { FC } from "react";
+
+interface CategoryProps {
+  value?: number;
+  onChangeCategory?: any
+}
 
 const arrayCategories = [
   { value: "Все", id: 0 },
@@ -9,19 +14,19 @@ const arrayCategories = [
   { value: "Закрытые", id: 5 },
 ];
 
-export const Categories = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+export const Categories: FC<CategoryProps> = ({ value, onChangeCategory }) => {
+  // const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="categories">
       <ul>
-        {arrayCategories.map((pizza) => (
+        {arrayCategories.map((categoryName, i) => (
           <li
-            key={pizza.value}
-            onClick={() => setActiveIndex(pizza.id)}
-            className={activeIndex === pizza.id ? "active" : ""}
+            key={categoryName.value}
+            onClick={() => onChangeCategory(categoryName.id)}
+            className={value === categoryName.id ? "active" : ""}
           >
-            {pizza.value}
+            {categoryName.value}
           </li>
         ))}
       </ul>
