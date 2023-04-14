@@ -3,7 +3,10 @@ import { Categories, Sort, PizzaBlock, Sceleton } from "../../components"
 import type { PizzaItem } from "../../types/PizzaItem";
 import { Pagination } from "antd"
 import scss from "./home.module.scss"
-import { SearchContext, ContextProps } from "../../App";
+import { SearchContext } from "../../App";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { getCategoryId, getSort } from "../../redux/filterSlice/selectors";
+import { actions } from "../../redux/filterSlice/slice";
 
 
 
@@ -13,11 +16,11 @@ export const Home = () => {
 
        const [items, setItems] = useState<PizzaItem>([]);
        const [isLoading, setIsLoading] = useState(true);
-       const [categoryId, setCategoryId] = useState(0);
-       const [sortType, setSortType] = useState({ name: "популярности", sortProperty: "rating" });
        const [params, setParams] = useState<{ page: number, limit: number }>({ page: 1, limit: 5 })
 
-
+       const categoryId = useAppSelector(getCategoryId)
+       const dispatch = useAppDispatch()
+       const sortType = useAppSelector(getSort)
 
        useEffect(() => {
               setIsLoading(true);
@@ -43,8 +46,8 @@ export const Home = () => {
        return (
               <div className="container">
                      <div className="content__top">
-                            <Categories value={categoryId} onChangeCategory={(id: any) => setCategoryId(id)} />
-                            <Sort value={sortType} onChangeSort={(id: any) => setSortType(id)} />
+                            <Categories value={categoryId} onChangeCategory={(id: number) => dispatch(actions.setCategoryId(id))} />
+                            <Sort />
                      </div>
                      <h2 className="content__title">Все пиццы</h2>
                      <div className="content__items">
