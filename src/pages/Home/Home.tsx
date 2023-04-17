@@ -5,8 +5,9 @@ import { Pagination } from "antd"
 import scss from "./home.module.scss"
 import { SearchContext } from "../../App";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { getCategoryId, getSort } from "../../redux/filterSlice/selectors";
+import { getCategoryId, getCountPizzas, getCurrentPage, getSort } from "../../redux/filterSlice/selectors";
 import { actions } from "../../redux/filterSlice/slice";
+import axios from "axios"
 
 
 
@@ -16,11 +17,13 @@ export const Home = () => {
 
        const [items, setItems] = useState<PizzaItem>([]);
        const [isLoading, setIsLoading] = useState(true);
-       const [params, setParams] = useState<{ page: number, limit: number }>({ page: 1, limit: 5 })
 
        const categoryId = useAppSelector(getCategoryId)
        const dispatch = useAppDispatch()
        const sortType = useAppSelector(getSort)
+       const currentPage = useAppSelector(getCurrentPage)
+       const pageSize = useAppSelector(getCountPizzas)
+
 
        useEffect(() => {
               setIsLoading(true);
@@ -30,14 +33,13 @@ export const Home = () => {
               const order = sortType.sortProperty.includes("-") ? "asd" : "desc";
               const search = searchValue ? `&search=${searchValue}` : "";
 
-              fetch(`https://63de7bcc3d94d02c0babff3a.mockapi.io/types?${category}&sortBy=${sortBy}&order=${order}${search}&limit=${params.limit}&page=${params.page}`)
-                     .then((res) => res.json())
-                     .then((arr) => {
-                            setItems(arr);
+              axios.get(`https://63de7bcc3d94d02c0babff3a.mockapi.io/types?${category}&sortBy=${sortBy}&order=${order}${search}&limit=${pageSize}&page=${currentPage}`)
+                     .then((res) => {
+                            setItems(res.data);
                             setIsLoading(false);
                      })
               window.scrollTo(0, 0)
-       }, [categoryId, sortType, searchValue, params]);
+       }, [categoryId, sortType, searchValue, currentPage, pageSize]);
 
        const pizzas = items.map((pizza) => (<PizzaBlock key={pizza.id} {...pizza} />))
        const sceleton = [... new Array(6)].map((_, index) => <Sceleton key={index} />)
@@ -54,18 +56,17 @@ export const Home = () => {
                             {isLoading ? sceleton : pizzas}
                      </div>
                      <Pagination
+                            pageSizeOptions={[5, 10]}
+                            showSizeChanger={true}
                             className={scss.pagination}
-                            current={params.page}
-                            pageSize={params.limit}
+                            current={currentPage}
+                            pageSize={pageSize}
                             total={10}
-                            onChange={(page, pageSize) => {
-                                   setParams((prevParams) => ({
-                                          ...prevParams,
-                                          ...(pageSize !== undefined && { limit: pageSize }),
-                                          ...(page !== undefined && { page: page }),
-                                   }));
-                            }}
-
+                            onChange={((page, pageSize) => {
+                                   dispatch(actions.setCurrentPage(page))
+                                   dispatch(actions.setCountPizzas(pageSize))
+                            })
+                            }
                      />
               </div>
        )

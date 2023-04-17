@@ -1,41 +1,50 @@
 import sass from "./search.module.scss"
-import React, { FC } from "react"
-import { SearchContext, ContextProps } from "../../App";
+import { SearchContext } from "../../App";
+import React from "react";
+import debounce from "lodash.debounce"
+import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
 
 
 
 export const Search = () => {
 
-       const { searchValue, setSearchValue }: any  = React.useContext(SearchContext)
+       const [value, setValue] = React.useState("")
+
+       const { setSearchValue }: any = React.useContext(SearchContext)
+       const inputRef = React.useRef<HTMLInputElement | null>(null)
+
+       const onClickClear = () => {
+              setSearchValue("");
+              setValue("");
+              if (inputRef.current !== null) {
+                     inputRef.current.focus()
+              }
+       }
+
+       const updateSearchValue = React.useCallback(
+              debounce((str) => {
+                     setSearchValue(str);
+              }, 500), [],
+       )
+
+       const onChangeInput = (event: any) => {
+              setValue(event.target.value);
+              updateSearchValue(event.target.value)
+       }
 
        return (
               <div className={sass.root}>
-                     <svg
-                            className={sass.icon}
-                            viewBox="0 0 32 32"
-                            xmlns="http://www.w3.org/2000/svg"
-                     >
-                            <title />
-                            <g id="search">
-                                   <path d="M29.71,28.29l-6.5-6.5-.07,0a12,12,0,1,0-1.39,1.39s0,.05,0,.07l6.5,6.5a1,1,0,0,0,1.42,0A1,1,0,0,0,29.71,28.29ZM14,24A10,10,0,1,1,24,14,10,10,0,0,1,14,24Z" />
-                            </g>
-                     </svg>
+                     <SearchOutlined className={sass.icon} />
                      <input
-                            value={searchValue}
-                            onChange={e => setSearchValue(e.target.value)}
+                            ref={inputRef}
+                            value={value}
+                            onChange={onChangeInput}
                             className={sass.input}
                             placeholder="Поиск пиццы..." />
-                     {searchValue && <svg
-                            onClick={() => setSearchValue("")}
-                            className={sass.clearIcon}
-                            data-name="Capa 1"
-                            id="Capa_1"
-                            viewBox="0 0 20 19.84"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                   d="M10.17,10l3.89-3.89a.37.37,0,1,0-.53-.53L9.64,9.43,5.75,5.54a.37.37,0,1,0-.53.53L9.11,10,5.22,13.85a.37.37,0,0,0,0,.53.34.34,0,0,0,.26.11.36.36,0,0,0,.27-.11l3.89-3.89,3.89,3.89a.34.34,0,0,0,.26.11.35.35,0,0,0,.27-.11.37.37,0,0,0,0-.53Z"
-                            />
-                     </svg>}
+                     {value && <CloseOutlined
+                            onClick={onClickClear}
+                            className={sass.clearIcon} 
+                            />}
               </div>
 
        )
