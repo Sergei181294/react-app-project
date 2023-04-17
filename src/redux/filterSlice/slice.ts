@@ -37,7 +37,7 @@ export const { reducer, actions } = createSlice({
               },
               setCountPizzas(state, action) {
                      state.countPizzas = action.payload
-              }
+              },
        }
 
 })

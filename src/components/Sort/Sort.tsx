@@ -3,18 +3,18 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getSort } from "../../redux/filterSlice/selectors";
 import { actions } from "../../redux/filterSlice/slice";
 
+export const list = [
+  { name: "популярности (DESC)", sortProperty: "rating" },
+  { name: "популярности (ASC)", sortProperty: "-rating" },
+  { name: "цене (DESC)", sortProperty: "price" },
+  { name: "цене (ASC)", sortProperty: "-price" },
+  { name: "алфавиту (DESC)", sortProperty: "title" },
+  { name: "алфавиту (ASC)", sortProperty: "-title" },
+];
+
 
 export const Sort = () => {
   const [open, setOpen] = useState(false);
-
-  const list = [
-    { name: "популярности (DESC)", sortProperty: "rating" },
-    { name: "популярности (ASC)", sortProperty: "-rating" },
-    { name: "цене (DESC)", sortProperty: "price" },
-    { name: "цене (ASC)", sortProperty: "-price" },
-    { name: "алфавиту (DESC)", sortProperty: "title" },
-    { name: "алфавиту (ASC)", sortProperty: "-title" },
-  ];
 
   const dispatch = useAppDispatch();
   const sort = useAppSelector(getSort);

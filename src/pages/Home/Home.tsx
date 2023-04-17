@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import { Categories, Sort, PizzaBlock, Sceleton } from "../../components"
 import type { PizzaItem } from "../../types/PizzaItem";
 import { Pagination } from "antd"
@@ -7,25 +7,27 @@ import { SearchContext } from "../../App";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getCategoryId, getCountPizzas, getCurrentPage, getSort } from "../../redux/filterSlice/selectors";
 import { actions } from "../../redux/filterSlice/slice";
+import { useNavigate } from "react-router-dom";
 import axios from "axios"
 
 
 
+
 export const Home = () => {
+       const dispatch = useAppDispatch()
+       const navigate = useNavigate()
 
        const { searchValue }: any = React.useContext(SearchContext)
-
        const [items, setItems] = useState<PizzaItem>([]);
        const [isLoading, setIsLoading] = useState(true);
 
+
        const categoryId = useAppSelector(getCategoryId)
-       const dispatch = useAppDispatch()
        const sortType = useAppSelector(getSort)
        const currentPage = useAppSelector(getCurrentPage)
        const pageSize = useAppSelector(getCountPizzas)
 
-
-       useEffect(() => {
+       const fetchPizzas = () => {
               setIsLoading(true);
 
               const category = categoryId > 0 ? `category=${categoryId}` : "";
@@ -38,8 +40,14 @@ export const Home = () => {
                             setItems(res.data);
                             setIsLoading(false);
                      })
-              window.scrollTo(0, 0)
+       }
+
+       useEffect(() => {
+              window.scrollTo(0, 0)    
+                     fetchPizzas();
        }, [categoryId, sortType, searchValue, currentPage, pageSize]);
+
+       
 
        const pizzas = items.map((pizza) => (<PizzaBlock key={pizza.id} {...pizza} />))
        const sceleton = [... new Array(6)].map((_, index) => <Sceleton key={index} />)
@@ -48,7 +56,7 @@ export const Home = () => {
        return (
               <div className="container">
                      <div className="content__top">
-                            <Categories value={categoryId} onChangeCategory={(id: number) => dispatch(actions.setCategoryId(id))} />
+                            <Categories value={categoryId} onChangeCategory={useCallback((id: number) => dispatch(actions.setCategoryId(id)), [])} />
                             <Sort />
                      </div>
                      <h2 className="content__title">Все пиццы</h2>
