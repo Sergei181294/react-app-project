@@ -7,7 +7,6 @@ import { SearchContext } from "../../App";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { getCategoryId, getCountPizzas, getCurrentPage, getSort } from "../../redux/filterSlice/selectors";
 import { actions } from "../../redux/filterSlice/slice";
-import { useNavigate } from "react-router-dom";
 import axios from "axios"
 
 
@@ -15,7 +14,6 @@ import axios from "axios"
 
 export const Home = () => {
        const dispatch = useAppDispatch()
-       const navigate = useNavigate()
 
        const { searchValue }: any = React.useContext(SearchContext)
        const [items, setItems] = useState<PizzaItem>([]);
