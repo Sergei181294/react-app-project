@@ -15,7 +15,6 @@ const arrayCategories = [
 ];
 
 export const Categories: FC<CategoryProps> = ({ value, onChangeCategory }) => {
-  // const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <div className="categories">
