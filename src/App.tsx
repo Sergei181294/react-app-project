@@ -1,6 +1,6 @@
 import "./scss/app.scss";
 import React from "react";
-import { Header } from "./components";
+import { Header, FullPizza } from "./components";
 import { Home, NotFound, Cart } from "./pages"
 import { Routes, Route } from "react-router-dom"
 
@@ -27,6 +27,7 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Cart" element={<Cart />} />
+              <Route path="/pizza/:id" element={<FullPizza />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

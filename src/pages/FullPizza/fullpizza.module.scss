@@ -1,0 +1,58 @@
+.container {
+       display: flex;
+       padding: 0 50px;
+}
+
+.conteinerInfo {
+       padding: 0 50px;
+}
+
+.pizzaImage {
+       width: 400px;
+}
+
+.title {
+       font-size: 32px;
+}
+
+.price {
+       font-size: 28px;
+}
+
+.btnPutInCart {
+       min-width: 300px;
+       margin: 20px 0 0;
+       height: 50px;
+       background-color: #f37b00;
+       font-size: 20px;
+       font-weight: 700;
+
+       &:hover {
+              margin-top: 15px;
+              background-color: #ff8800;
+              border: none;
+       }
+
+       &>span {
+              color: #fff
+       }
+}
+
+.btnGoToCart {
+       min-width: 300px;
+       margin: 20px 0 0;
+       height: 50px;
+       background-color: #ffffff;   
+       border: 1px solid #ff8800;
+       font-size: 20px;
+       font-weight: 700;
+
+       &>span {
+              color: #ff8800;
+       }
+}
+
+
+
+
+

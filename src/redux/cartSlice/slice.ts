@@ -37,6 +37,7 @@ export const { reducer, actions } = createSlice({
                             })
                      }
                      state.totalPrice = state.items.reduce((sum: number, obj: Pizza) => {
+                            console.log(action.payload)
                             return obj.price * obj.count + sum;
                      }, 0)
 

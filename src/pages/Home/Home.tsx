@@ -9,12 +9,12 @@ import { getCategoryId, getCountPizzas, getCurrentPage, getSort } from "../../re
 import { actions } from "../../redux/filterSlice/slice";
 import { getLoadStatus, getPizzaItems } from "../../redux/pizzaSlice/selectors";
 import { LOAD_STATUSES_TYPES } from "../../types/LoadStatuses";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
        const dispatch = useAppDispatch()
 
        const { searchValue }: any = React.useContext(SearchContext)
-       // const [isLoading, setIsLoading] = useState(true);
        const isLoading = useAppSelector(getLoadStatus)
        const items = useAppSelector(getPizzaItems)
 
@@ -38,7 +38,7 @@ export const Home = () => {
               getPizzas();
        }, [categoryId, sortType, searchValue, currentPage, pageSize]);
 
-       const pizzas = items.map((pizza) => (<PizzaBlock key={pizza.id} {...pizza} />))
+       const pizzas = items.map((pizza) => <PizzaBlock  {...pizza} key={pizza.id} />)
        const sceleton = [... new Array(6)].map((_, index) => <Sceleton key={index} />)
 
        return (

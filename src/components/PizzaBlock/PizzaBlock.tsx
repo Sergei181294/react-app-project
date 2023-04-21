@@ -4,6 +4,7 @@ import { PlusOutlined } from "@ant-design/icons"
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { actions } from "../../redux/cartSlice/slice";
 import { getItemsFromCart } from "../../redux/cartSlice/selectors";
+import { Link } from "react-router-dom";
 
 interface PizzaBlockProps {
   title: string;
@@ -36,8 +37,10 @@ export const PizzaBlock: FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes,
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{title}</h4>
+        <Link to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
+        </Link>
         <div className="pizza-block__selector">
           <ul>
             {types.map((type) => (
@@ -67,7 +70,7 @@ export const PizzaBlock: FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes,
           <button onClick={onClickAdd} className="button button--outline button--add">
             <PlusOutlined />
             <span>Добавить</span>
-            {addedCount> 0 && <i>{addedCount}</i>}
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>

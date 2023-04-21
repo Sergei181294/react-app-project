@@ -8,7 +8,7 @@ export const CartItem: FC<Pizza> = ({ id, title, type, price, count, size, image
        const dispatch = useAppDispatch();
 
        const onClickPlus = () => {
-              dispatch(actions.addItem({ id }))
+              dispatch(actions.addItem( {id} ))
        }
 
        const onClickMinus = () => {
