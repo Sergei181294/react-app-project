@@ -1,20 +1,19 @@
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { useAppDispatch } from "../../hooks/hooks"
 import axios from "axios"
 import { Loader } from "../../components"
 import { Pizza } from "../../redux/cartSlice/slice"
 import scss from "./fullpizza.module.scss"
 import { Button } from "antd"
 import { ShoppingCartOutlined, CheckOutlined } from "@ant-design/icons"
-import { actions } from "../../redux/cartSlice/slice"
+
 
 export const FullPizza = () => {
        const [pizza, setPizza] = useState<Pizza>()
        const [btnValue, setBtnValue] = useState("Положить в корзину")
        const { id } = useParams()
        const navigate = useNavigate()
-       const dispatch = useAppDispatch()
+       
 
        useEffect(() => {
               async function fetchPizza() {

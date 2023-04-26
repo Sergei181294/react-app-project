@@ -4,14 +4,14 @@ import { Search } from "../Search";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { useAppSelector } from "../../hooks/hooks";
 import { getTotalPrice, getItemsFromCart } from "../../redux/cartSlice/selectors";
-
+import { Pizza } from "../../redux/cartSlice/slice";
 
 
 export const Header = () => {
   const location = useLocation()
   const totalPrice = useAppSelector(getTotalPrice)
   const itemsInCart = useAppSelector(getItemsFromCart)
-  const totalCount = itemsInCart.reduce((sum, obj) => {
+  const totalCount = itemsInCart.reduce((sum: number, obj: Pizza) => {
     return obj.count + sum
   }, 0)
 

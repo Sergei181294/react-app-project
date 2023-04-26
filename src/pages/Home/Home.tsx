@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, FC } from "react"
 import { Categories, Sort, PizzaBlock, Sceleton } from "../../components"
 import { fetchPizzas } from "../../redux/pizzaSlice/slice";
 import { Pagination } from "antd"
@@ -10,8 +10,9 @@ import { actions } from "../../redux/filterSlice/slice";
 import { getLoadStatus, getPizzaItems } from "../../redux/pizzaSlice/selectors";
 import { LOAD_STATUSES_TYPES } from "../../types/LoadStatuses";
 import { Link } from "react-router-dom";
+import { Pizza } from "../../redux/cartSlice/slice";
 
-export const Home = () => {
+export const Home: FC = () => {
        const dispatch = useAppDispatch()
 
        const { searchValue }: any = React.useContext(SearchContext)
@@ -38,7 +39,7 @@ export const Home = () => {
               getPizzas();
        }, [categoryId, sortType, searchValue, currentPage, pageSize]);
 
-       const pizzas = items.map((pizza) => <PizzaBlock  {...pizza} key={pizza.id} />)
+       const pizzas = items.map((pizza: any) => <PizzaBlock  {...pizza} key={pizza.id} />)
        const sceleton = [... new Array(6)].map((_, index) => <Sceleton key={index} />)
 
        return (
@@ -64,7 +65,7 @@ export const Home = () => {
                                           current={currentPage}
                                           pageSize={pageSize}
                                           total={10}
-                                          onChange={((page, pageSize) => {
+                                          onChange={((page: number, pageSize: number) => {
                                                  dispatch(actions.setCurrentPage(page))
                                                  dispatch(actions.setCountPizzas(pageSize))
                                           })

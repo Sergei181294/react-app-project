@@ -55,7 +55,7 @@ export const { reducer, actions } = createSlice({
                      }
               },
               removeItem(state, action) {
-                     state.items = state.items.filter((item: any) => item.id !== action.payload)
+                     state.items = state.items.filter((item: Pizza) => item.id !== action.payload)
               },
               clearItems(state) {
                      state.items = [];

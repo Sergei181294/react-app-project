@@ -3,13 +3,14 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hooks"
 import { getItemsFromCart, getTotalPrice } from "../../redux/cartSlice/selectors";
 import { CartItem, EmptyCart } from "../../components";
 import { actions } from "../../redux/cartSlice/slice";
+import { Pizza } from "../../redux/cartSlice/slice";
+import { FC } from "react";
 
-export const Cart = () => {
-
+export const Cart: FC = () => {
        const dispatch = useAppDispatch();
        const itemsInCart = useAppSelector(getItemsFromCart)
        const totalPrice = useAppSelector(getTotalPrice)
-       const totalCount = itemsInCart.reduce((sum, obj) => {
+       const totalCount = itemsInCart.reduce((sum: number, obj: Pizza) => {
               return obj.count + sum
             }, 0)
 
@@ -45,7 +46,7 @@ export const Cart = () => {
                                    </div>
                             </div>
                             <div className="content__items">
-                                   {itemsInCart.map((item) => <CartItem key={item.id}  {...item} /> )}
+                                   {itemsInCart.map((item: Pizza) => <CartItem key={item.id}  {...item} /> )}
                                    
 
                             </div>
