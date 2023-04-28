@@ -1,8 +1,8 @@
 import { FC } from "react";
 
 interface CategoryProps {
-  value?: number;
-  onChangeCategory?: any
+  value: number;
+  onChangeCategory: (i: number) => void;
 }
 
 const arrayCategories = [

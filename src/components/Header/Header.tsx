@@ -1,11 +1,21 @@
 import logoPizza from "../../assets/img/pizza-logo.svg"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { Search } from "../Search";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-
+import { useAppSelector } from "../../hooks/hooks";
+import { getTotalPrice, getItemsFromCart } from "../../redux/cartSlice/selectors";
+import { Pizza } from "../../redux/cartSlice/slice";
 
 
 export const Header = () => {
+  const location = useLocation()
+  const totalPrice = useAppSelector(getTotalPrice)
+  const itemsInCart = useAppSelector(getItemsFromCart)
+  const totalCount = itemsInCart.reduce((sum: number, obj: Pizza) => {
+    return obj.count + sum
+  }, 0)
+
+
   return (
     <div className="header">
       <div className="container">
@@ -20,12 +30,14 @@ export const Header = () => {
         </Link>
         <Search />
         <div className="header__cart">
-          <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
-            <div className="button__delimiter"></div>
-            <ShoppingCartOutlined />
-            <span>3</span>
-          </Link>
+          {location.pathname !== "/cart" &&
+            <Link to="/cart" className="button button--cart">
+              <span>{totalPrice} ₽</span>
+              <div className="button__delimiter"></div>
+              <ShoppingCartOutlined />
+              <span>{totalCount}</span>
+            </Link>}
+
         </div>
       </div>
     </div>

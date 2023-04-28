@@ -3,6 +3,7 @@ import { SearchContext } from "../../App";
 import React from "react";
 import debounce from "lodash.debounce"
 import { SearchOutlined, CloseOutlined } from "@ant-design/icons";
+import { ChangeEvent } from "react"
 
 
 
@@ -11,7 +12,7 @@ export const Search = () => {
        const [value, setValue] = React.useState("")
 
        const { setSearchValue }: any = React.useContext(SearchContext)
-       const inputRef = React.useRef<HTMLInputElement | null>(null)
+       const inputRef = React.useRef<HTMLInputElement>(null)
 
        const onClickClear = () => {
               setSearchValue("");
@@ -27,7 +28,7 @@ export const Search = () => {
               }, 500), [],
        )
 
-       const onChangeInput = (event: any) => {
+       const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
               setValue(event.target.value);
               updateSearchValue(event.target.value)
        }

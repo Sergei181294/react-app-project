@@ -1,6 +1,10 @@
 import { FC } from "react";
-import { useState } from "react"; 
+import { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons"
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { actions } from "../../redux/cartSlice/slice";
+import { getItemsFromCart } from "../../redux/cartSlice/selectors";
+import { Link } from "react-router-dom";
 
 interface PizzaBlockProps {
   title: string;
@@ -8,25 +12,35 @@ interface PizzaBlockProps {
   imageUrl: string;
   sizes: number[];
   types: number[];
+  id: number;
 }
 
-export const PizzaBlock: FC<PizzaBlockProps> = ({
-  title,
-  price,
-  imageUrl,
-  sizes,
-  types,
-}) => {
-  
+export const PizzaBlock: FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, types, id }) => {
+
   const typeNames = ["тонкое", "традиционное"];
+
   const [activeTypes, setActiveTypes] = useState(0);
   const [activeSizes, setActiveSizes] = useState(0);
+  const itemsInCart = useAppSelector(getItemsFromCart)
+  const itemInCart = itemsInCart.find((obj) => obj.id === id)
+  const addedCount = itemInCart ? itemInCart.count : 0;
+
+  const dispatch = useAppDispatch();
+
+  const onClickAdd = () => {
+    const item = {
+      id, title, price, imageUrl, type: typeNames[activeTypes], size: sizes[activeSizes]
+    }
+    dispatch(actions.addItem(item))
+  }
 
   return (
     <div className="pizza-block-wrapper">
       <div className="pizza-block">
-        <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-        <h4 className="pizza-block__title">{title}</h4>
+        <Link to={`/pizza/${id}`}>
+          <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+          <h4 className="pizza-block__title">{title}</h4>
+        </Link>
         <div className="pizza-block__selector">
           <ul>
             {types.map((type) => (
@@ -53,10 +67,10 @@ export const PizzaBlock: FC<PizzaBlockProps> = ({
         </div>
         <div className="pizza-block__bottom">
           <div className="pizza-block__price">от {price} ₽</div>
-          <button className="button button--outline button--add">
+          <button onClick={onClickAdd} className="button button--outline button--add">
             <PlusOutlined />
             <span>Добавить</span>
-            <i>0</i>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>
