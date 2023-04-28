@@ -37,7 +37,6 @@ export const { reducer, actions } = createSlice({
                             })
                      }
                      state.totalPrice = state.items.reduce((sum: number, obj: Pizza) => {
-                            console.log(action.payload)
                             return obj.price * obj.count + sum;
                      }, 0)
 
@@ -56,6 +55,9 @@ export const { reducer, actions } = createSlice({
               },
               removeItem(state, action) {
                      state.items = state.items.filter((item: Pizza) => item.id !== action.payload)
+                     state.totalPrice = state.items.reduce((sum: number, obj: Pizza) => {
+                            return obj.price * obj.count + sum;
+                     }, 0)
               },
               clearItems(state) {
                      state.items = [];

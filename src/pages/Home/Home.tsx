@@ -9,8 +9,7 @@ import { getCategoryId, getCountPizzas, getCurrentPage, getSort } from "../../re
 import { actions } from "../../redux/filterSlice/slice";
 import { getLoadStatus, getPizzaItems } from "../../redux/pizzaSlice/selectors";
 import { LOAD_STATUSES_TYPES } from "../../types/LoadStatuses";
-import { Link } from "react-router-dom";
-import { Pizza } from "../../redux/cartSlice/slice";
+import axios from "axios";
 
 export const Home: FC = () => {
        const dispatch = useAppDispatch()
@@ -34,6 +33,9 @@ export const Home: FC = () => {
               dispatch(fetchPizzas({ category, sortBy, order, search, currentPage, pageSize }));
        }
 
+       const res = axios.get(`http://www.omdbapi.com/?y=2017&apikey=c0b83f3d`)
+       res.then(data => console.log(data.data))
+       
        useEffect(() => {
               window.scrollTo(0, 0)
               getPizzas();
