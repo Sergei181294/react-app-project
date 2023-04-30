@@ -33,8 +33,6 @@ export const Home: FC = () => {
               dispatch(fetchPizzas({ category, sortBy, order, search, currentPage, pageSize }));
        }
 
-       const res = axios.get(`http://www.omdbapi.com/?y=2017&apikey=c0b83f3d`)
-       res.then(data => console.log(data.data))
        
        useEffect(() => {
               window.scrollTo(0, 0)
